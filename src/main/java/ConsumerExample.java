@@ -8,9 +8,10 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
-public class Example {
-    public Example() {
+public class ConsumerExample {
+    public ConsumerExample() {
         Properties props = new Properties();
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "customers-app");
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, CustomerDeserializer.class.getName());
@@ -23,7 +24,7 @@ public class Example {
             for (ConsumerRecord record: records) {
                 String key = (String) record.key();
                 Customer customer = (Customer) record.value();
-                System.out.printf("key=%s, id=%d, first_name=%s, last_name=%s, age=%d, gender=%c, salary=%f",
+                System.out.printf("key=%s, id=%d, first_name=%s, last_name=%s, age=%d, gender=%c, salary=%.2f\n",
                         key, customer.getId(), customer.getFirstName(), customer.getLastName(), customer.getAge(),
                         customer.getGender(), customer.getSalary());
             }
@@ -31,6 +32,6 @@ public class Example {
     }
 
     public static void main(String[] args) {
-        new Example();
+        new ConsumerExample();
     }
 }
